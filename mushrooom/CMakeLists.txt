@@ -11,21 +11,12 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 # (you can also set it on the command line: -D CMAKE_BUILD_TYPE=Release)
 
-project(gome)
 
-# Set version information in a config.h file
-set(myproject_VERSION_MAJOR 1)
-set(myproject_VERSION_MINOR 0)
-
-#configure_file(
-  #"${PROJECT_SOURCE_DIR}/config.h.in"
-  #"${PROJECT_BINARY_DIR}/config.h"
-#  )
+project(mushroom)
 
 include_directories("${PROJECT_BINARY_DIR}")
 
-# Define sources and executable
-set(EXECUTABLE_NAME "../gome")
+set(EXECUTABLE_NAME "../mushroom")
 file(GLOB OTHER_CPP *.cpp)
 add_executable(${EXECUTABLE_NAME} main.cpp ${OTHER_CPP})
 
@@ -47,7 +38,4 @@ install(TARGETS ${EXECUTABLE_NAME} DESTINATION bin)
 
 # CPack packaging
 include(InstallRequiredSystemLibraries)
-#set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/COPYING")
-set(CPACK_PACKAGE_VERSION_MAJOR "${myproject_VERSION_MAJOR}")
-set(CPACK_PACKAGE_VERSION_MINOR "${myproject_VERSION_MINOR}")
 include(CPack)
