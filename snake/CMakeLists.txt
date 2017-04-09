@@ -1,8 +1,6 @@
 #Change this if you need to target a specific CMake version
 cmake_minimum_required(VERSION 2.6)
 
-set(CMAKE_CXX_COMPILER /usr/bin/g++-5)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -g")
 
 # Enable debug symbols by default
 # must be done before project() statement
@@ -31,6 +29,8 @@ if(SFML_FOUND)
   target_link_libraries(${EXECUTABLE_NAME} ${SFML_LIBRARIES})
 endif()
 
+set(CMAKE_CXX_COMPILER /usr/bin/g++-5)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -g")
 
 # Install target
 install(TARGETS ${EXECUTABLE_NAME} DESTINATION bin)

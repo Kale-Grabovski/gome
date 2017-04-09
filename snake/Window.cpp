@@ -1,4 +1,3 @@
-#include <string>
 #include "Window.h"
 
 Window::Window() { 

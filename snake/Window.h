@@ -9,6 +9,7 @@ public:
     Window();
     Window(const std::string& l_title,const sf::Vector2u& l_size);
     virtual ~Window();
+    
     void BeginDraw(); // Clear the window.
     void EndDraw(); // Display the changes.
     void Update();

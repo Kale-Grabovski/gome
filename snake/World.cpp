@@ -1,7 +1,8 @@
 #include "World.h"
 
-World::World(sf::Vector2u l_windSize) {
-    m_blockSize  = 16;
+World::World(std::shared_ptr<Gameplay> gameplay, sf::Vector2u l_windSize) {
+    m_gameplay   = gameplay;
+    m_blockSize  = 20;
     m_windowSize = l_windSize;
     RespawnApple();
     m_appleShape.setFillColor(sf::Color::Red);
@@ -25,7 +26,9 @@ World::World(sf::Vector2u l_windSize) {
     }
 }
 
-World::~World() {}
+void World::DestroyApple() {
+    m_appleShape.setFillColor(sf::Color::Black);
+}
 
 void World::RespawnApple() {
     int maxX = (m_windowSize.x / m_blockSize) - 2;
@@ -48,7 +51,7 @@ void World::Update(std::shared_ptr<Snake> l_player) {
         l_player->GetPosition().y <= 0 ||
         l_player->GetPosition().x >= gridSize_x - 1 || 
         l_player->GetPosition().y >= gridSize_y - 1) {
-        l_player->Lose();
+        m_gameplay->Lose();
     }
 }
 

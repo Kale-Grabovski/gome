@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <SFML/Graphics.hpp>
+#include "Gameplay.h"
 
 struct SnakeSegment {
     SnakeSegment(int x, int y) : position(x, y) {}
@@ -12,26 +13,21 @@ enum class Direction{ None, Up, Down, Left, Right };
 
 using SnakeContainer = std::vector<SnakeSegment>;
 
+class Gameplay;
 class Snake {
 public:
-    Snake(int l_blockSize);
+    explicit Snake(std::shared_ptr<Gameplay> m_gameplay, int l_blockSize);
     virtual ~Snake();
 
     // Helper methods.
     void SetDirection(Direction l_dir);
     Direction GetPhysicalDirection();
-    int GetSpeed();
     sf::Vector2i GetPosition();
-    int GetLives();
-    int GetScore();
     void IncreaseScore();
-    bool HasLost();
-
-    void Lose(); // Handle losing here.
-    void ToggleLost();
 
     void Extend(); // Grow the snake.
     void Reset(); // Reset to starting position.
+    void Destroy();
 
     void Move(); // Movement method.
     void Tick(); // Update method.
@@ -40,12 +36,10 @@ public:
 private:
     void CheckCollision(); // Checking for collisions.
     SnakeContainer m_snakeBody; // Segment vector.
+    std::shared_ptr<Gameplay> gameplay; // Mediator pointer
 
     int m_size; // Size of the graphics.
     Direction m_dir; // Current direction.
-    int m_speed; // Speed of the snake.
-    int m_lives; // Lives.
-    int m_score; // Score.
-    bool m_lost; // Losing state.
+    int m_collisionsLeft; // Number of collisions left to itself
     sf::RectangleShape m_bodyRect; // Shape used in rendering.
 };
