@@ -1,17 +1,19 @@
+#include <iostream>
 #include "Game.h"
 
-Game::Game(): m_window("Chapter 2", sf::Vector2u(800,600)) {
+Game::Game(): m_window("Mushroom", sf::Vector2u(800,600)) {
     // Setting up class members.
     m_mushroomTexture.loadFromFile("Mushroom.png");
     m_mushroom.setTexture(m_mushroomTexture);
     m_increment = sf::Vector2i(400, 400);
+    m_window.GetEventManager()->AddCallback("Move", &Game::MoveSprite, this);
 }
 
 Game::~Game() {}
 
 void Game::Update() {
     m_window.Update(); // Update window events.
-    MoveMushroom();
+    //MoveMushroom();
 }
 
 void Game::MoveMushroom() {
@@ -54,3 +56,9 @@ void Game::RestartClock() {
 }
 
 void Game::HandleInput() {}
+
+void Game::MoveSprite(EventDetails* l_details) {
+    sf::Vector2i mousepos = m_window.GetEventManager()->GetMousePos(m_window.GetRenderWindow());
+    m_mushroom.setPosition(mousepos.x, mousepos.y);
+    std::cout << "Moving sprite to: "<< mousepos.x << ":"<< mousepos.y << std::endl;
+}

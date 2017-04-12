@@ -13,6 +13,7 @@ public:
     Window* GetWindow();
     sf::Time GetElapsed();
     void RestartClock();
+    void MoveSprite(EventDetails* l_details);
 
 private:
     void MoveMushroom();

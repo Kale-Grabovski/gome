@@ -78,3 +78,10 @@ void Window::Draw(sf::Drawable& l_drawable) {
 void Window::Close(EventDetails* l_details) { m_isDone = true; }
 
 
+sf::RenderWindow* Window::GetRenderWindow() {
+    return &m_window;
+}
+
+EventManager* Window::GetEventManager() {
+    return m_eventManager;
+}

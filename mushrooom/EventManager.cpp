@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <string>
 #include <sstream>
 #include "EventManager.h"
 
@@ -40,7 +41,9 @@ void EventManager::HandleEvent(sf::Event& l_event) {
         for (auto &e_itr : bind->m_events) {
             EventType sfmlEvent = (EventType)l_event.type;
 
-            if (e_itr.first != sfmlEvent) { continue; }
+            if (e_itr.first != sfmlEvent) { 
+                continue; 
+            }
 
             if (sfmlEvent == EventType::KeyDown || sfmlEvent == EventType::KeyUp) {
                 if (e_itr.second.m_code == l_event.key.code) {
@@ -119,7 +122,7 @@ void EventManager::Update() {
         if (bind->m_events.size() == bind->c) {
             auto callItr = m_callbacks.find(bind->m_name);
 
-            if(callItr != m_callbacks.end()) {
+            if (callItr != m_callbacks.end()) {
                 callItr->second(&bind->m_details);
             }
         }
