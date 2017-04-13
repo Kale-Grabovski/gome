@@ -94,6 +94,7 @@ void EventManager::Update() {
         Binding* bind = b_itr.second;
 
         for (auto &e_itr : bind->m_events) {
+            // I dont know for now where the fuck this shit inside switch is fired
             switch (e_itr.first) {
             case(EventType::Keyboard) :
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(e_itr.second.m_code))) {

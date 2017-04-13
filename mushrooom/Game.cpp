@@ -7,6 +7,7 @@ Game::Game(): m_window("Mushroom", sf::Vector2u(800,600)) {
     m_mushroom.setTexture(m_mushroomTexture);
     m_increment = sf::Vector2i(400, 400);
     m_window.GetEventManager()->AddCallback("Move", &Game::MoveSprite, this);
+    m_window.GetEventManager()->AddCallback("Refresh", &Game::RefreshSprite, this);
 }
 
 Game::~Game() {}
@@ -14,6 +15,15 @@ Game::~Game() {}
 void Game::Update() {
     m_window.Update(); // Update window events.
     //MoveMushroom();
+}
+
+void Game::MoveSprite(EventDetails* l_details) {
+    sf::Vector2i mousepos = m_window.GetEventManager()->GetMousePos(m_window.GetRenderWindow());
+    m_mushroom.setPosition(mousepos.x, mousepos.y);
+}
+
+void Game::RefreshSprite(EventDetails* l_details) {
+    m_mushroom.setPosition(0, 0);
 }
 
 void Game::MoveMushroom() {
@@ -56,9 +66,3 @@ void Game::RestartClock() {
 }
 
 void Game::HandleInput() {}
-
-void Game::MoveSprite(EventDetails* l_details) {
-    sf::Vector2i mousepos = m_window.GetEventManager()->GetMousePos(m_window.GetRenderWindow());
-    m_mushroom.setPosition(mousepos.x, mousepos.y);
-    std::cout << "Moving sprite to: "<< mousepos.x << ":"<< mousepos.y << std::endl;
-}
