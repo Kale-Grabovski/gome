@@ -33,6 +33,16 @@ bool EventManager::RemoveBinding(std::string l_name) {
     return true;
 }
 
+bool EventManager::RemoveCallback(StateType l_state, const std::string& l_name) {
+    auto itr = m_callbacks.find(l_state);
+    if (itr == m_callbacks.end()) { return false; }
+    auto itr2 = itr->second.find(l_name);
+    if (itr2 == itr->second.end()) { return false; }
+    itr->second.erase(l_name);
+
+    return true;
+}
+
 void EventManager::HandleEvent(sf::Event& l_event) {
     // Handling SFML events.
     for (auto &b_itr : m_bindings) {
@@ -121,10 +131,23 @@ void EventManager::Update() {
         }
 
         if (bind->m_events.size() == bind->c) {
-            auto callItr = m_callbacks.find(bind->m_name);
+            auto stateCallbacks = m_callbacks.find(m_currentState);
+            auto otherCallbacks = m_callbacks.find(StateType(0));
 
-            if (callItr != m_callbacks.end()) {
-                callItr->second(&bind->m_details);
+            if (stateCallbacks != m_callbacks.end()) {
+                auto callItr = stateCallbacks->second.find(bind->m_name);
+                if (callItr != stateCallbacks->second.end()) {
+                    // Pass in information about events.
+                    callItr->second(&bind->m_details);
+                }
+            }
+            
+            if (otherCallbacks != m_callbacks.end()) {
+                auto callItr = otherCallbacks->second.find(bind->m_name);
+                if (callItr != otherCallbacks->second.end()) {
+                    // Pass in information about events.
+                    callItr->second(&bind->m_details);
+                }
             }
         }
 

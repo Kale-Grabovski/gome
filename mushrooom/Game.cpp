@@ -1,19 +1,23 @@
 #include <iostream>
 #include "Game.h"
 
-Game::Game(): m_window("Mushroom", sf::Vector2u(800,600)) {
+Game::Game(): m_window("Mushroom", sf::Vector2u(800,600)), m_stateManager(&m_context) {
     // Setting up class members.
     m_mushroomTexture.loadFromFile("Mushroom.png");
     m_mushroom.setTexture(m_mushroomTexture);
     m_increment = sf::Vector2i(400, 400);
-    m_window.GetEventManager()->AddCallback("Move", &Game::MoveSprite, this);
-    m_window.GetEventManager()->AddCallback("Refresh", &Game::RefreshSprite, this);
+    //m_window.GetEventManager()->AddCallback("Move", &Game::MoveSprite, this);
+    //m_window.GetEventManager()->AddCallback("Refresh", &Game::RefreshSprite, this);
+    m_context.m_wind = &m_window;
+    m_context.m_eventManager = m_window.GetEventManager();
+    m_stateManager.SwitchTo(StateType::Intro);
 }
 
 Game::~Game() {}
 
 void Game::Update() {
     m_window.Update(); // Update window events.
+    m_stateManager.Update(m_elapsed);
     //MoveMushroom();
 }
 
@@ -49,7 +53,8 @@ void Game::MoveMushroom() {
 
 void Game::Render() {
     m_window.BeginDraw();
-    m_window.Draw(m_mushroom);
+    //m_window.Draw(m_mushroom);
+    m_stateManager.Draw();
     m_window.EndDraw();
 }
 
@@ -66,3 +71,8 @@ void Game::RestartClock() {
 }
 
 void Game::HandleInput() {}
+
+void Game::LateUpdate() {
+    m_stateManager.ProcessRequests();
+    RestartClock();
+}

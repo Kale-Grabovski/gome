@@ -4,6 +4,8 @@
 #include <SFML/Graphics.hpp>
 #include "EventManager.h"
 
+class EventManager;
+struct EventDetails;
 class Window {
 public:
     Window();

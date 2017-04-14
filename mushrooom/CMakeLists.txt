@@ -1,9 +1,6 @@
 #Change this if you need to target a specific CMake version
 cmake_minimum_required(VERSION 2.6)
 
-set(CMAKE_CXX_COMPILER /usr/bin/g++-5)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -g -Wswitch")
-
 # Enable debug symbols by default
 # must be done before project() statement
 if(NOT CMAKE_BUILD_TYPE)
@@ -16,7 +13,7 @@ project(mushroom)
 
 include_directories("${PROJECT_BINARY_DIR}")
 
-set(EXECUTABLE_NAME "../mushroom")
+set(EXECUTABLE_NAME "mushroom")
 file(GLOB OTHER_CPP *.cpp)
 add_executable(${EXECUTABLE_NAME} main.cpp ${OTHER_CPP})
 
@@ -31,6 +28,9 @@ if(SFML_FOUND)
   target_link_libraries(${EXECUTABLE_NAME} ${SFML_LIBRARIES})
 endif()
 
+set(CMAKE_CXX_COMPILER /usr/bin/g++-5)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -g")
+set(SOURCE_FILES main.cpp ${OTHER_CPP})
 
 # Install target
 install(TARGETS ${EXECUTABLE_NAME} DESTINATION bin)

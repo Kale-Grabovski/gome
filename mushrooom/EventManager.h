@@ -4,8 +4,10 @@
 #include <string>
 #include <functional>
 #include <utility>
-#include <unordered_map>   
+#include <map>   
 #include <SFML/Graphics.hpp>
+#include "BaseState.h"
+#include "StateManager.h"
 
 enum class EventType {
     KeyDown = sf::Event::KeyPressed,
@@ -69,14 +71,16 @@ struct Binding {
     uint c; // Count of events that are "happening".
 };
 
-using Bindings  = std::unordered_map<std::string, Binding*>;
-using Callbacks = std::unordered_map<std::string, std::function<void(EventDetails*)>>;
+enum class StateType; // forward decl
+using Bindings  = std::map<std::string, Binding*>;
+using CallbackContainer = std::map<std::string, std::function<void(EventDetails*)>>;
+using Callbacks = std::map<StateType, CallbackContainer>;
 
 
 class EventManager {
 public:
     EventManager();
-    ~EventManager();
+    virtual ~EventManager();
 
     bool AddBinding(Binding* l_binding);
     bool RemoveBinding(std::string l_name);
@@ -84,15 +88,14 @@ public:
 
     // Needs to be defined in the header!
     template<class T>
-    bool AddCallback(const std::string& l_name, void(T::*l_func)(EventDetails*), T* l_instance) {
+    bool AddCallback(StateType l_state, const std::string& l_name, 
+        void(T::*l_func)(EventDetails*), T* l_instance) {
+        auto itr = m_callbacks.emplace(l_state, CallbackContainer()).first;
         auto temp = std::bind(l_func, l_instance, std::placeholders::_1);
-        return m_callbacks.emplace(l_name, temp).second;
+        return itr->second.emplace(l_name, temp).second;
     }
 
-    void RemoveCallback(const std::string& l_name) {
-        m_callbacks.erase(l_name);
-    }
-
+    bool RemoveCallback(StateType l_state, const std::string& l_name);
     void HandleEvent(sf::Event& l_event);
     void Update();
 
@@ -104,5 +107,6 @@ private:
     void LoadBindings();
     Bindings m_bindings;
     Callbacks m_callbacks;
+    StateType m_currentState;
     bool m_hasFocus;
 };

@@ -1,6 +1,7 @@
 #pragma once 
 
 #include "Window.h"
+#include "StateManager.h"
 #include <SFML/Graphics.hpp>
 
 class Game {
@@ -15,6 +16,7 @@ public:
     void RestartClock();
     void MoveSprite(EventDetails* l_details);
     void RefreshSprite(EventDetails* l_details);
+    void LateUpdate();
 
 private:
     void MoveMushroom();
@@ -24,4 +26,6 @@ private:
     sf::Texture m_mushroomTexture;
     sf::Clock m_clock;
     sf::Time m_elapsed;
+    StateManager m_stateManager;
+    SharedContext m_context;
 };
