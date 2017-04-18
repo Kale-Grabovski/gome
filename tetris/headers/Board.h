@@ -1,6 +1,8 @@
 #pragma once
 
+#include <array>
 #include <memory>
+#include <string>
 #include <SFML/Graphics.hpp>
 #include "Window.h"
 
@@ -11,12 +13,20 @@ public:
     virtual ~Board() {}
 
     void update();
-    int getBlockSize();
-    void render();
+    void render(const int, const int);
 private:
-    std::shared_ptr<Window> window;
-    int blockSize; // size of one block
+    void drawGrid();
+    void drawLabels(const int, const int);
+    void drawText(sf::Text &label, const std::string text, const int offsetX, const int offsetY);
 
-    static const int blocksX = 10;
-    static const int blocksY = 20;
+    std::shared_ptr<Window> window;
+    sf::Font font;
+    sf::Color recordColor;
+    sf::Text score;
+    sf::Text level;
+    int blockSize; // size of one block
+    std::array<std::array<int, 10>, 20> grid;
+
+    static const int blocksHor  = 10;
+    static const int blocksVert = 20;
 };

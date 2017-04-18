@@ -1,15 +1,16 @@
 #include <iostream>
 #include "headers/Game.h"
 
-Game::Game() : window(std::make_shared<Window>("Tetris", sf::Vector2u(600, 600))) {}
+Game::Game() 
+    : window(std::make_shared<Window>("Tetris", sf::Vector2u(500, 600))),
+    board(std::make_shared<Board>(window)) {}
 
 void Game::setup() {
-    speed = 1;
-    board = std::make_shared<Board>(window);    
+    time(NULL);
 }
 
 void Game::update() {
-    sf::Time timestep = sf::seconds(1.0f / speed);
+    sf::Time timestep = sf::seconds(1.0f / level);
 
     if (elapsed >= timestep) {
         board->update();
@@ -21,7 +22,7 @@ void Game::update() {
 
 void Game::render() {
     window->beginDraw();
-    board->render();
+    board->render(score, level);
     window->endDraw();
 }
 
@@ -45,6 +46,8 @@ void Game::handleInput() {
     } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
         // go right
     }
+
+    // later space for pause
 }
 
 void Game::increaseScore() {

@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include "Window.h"
 #include "Board.h"
+#include "Figure.h"
 
 class Game {
 public:
@@ -25,7 +26,9 @@ private:
     std::shared_ptr<Board> board;
     sf::Clock clock;
     sf::Time elapsed;
-    int score;
-    int speed;
+    int score = 0;
+    int level = 1;
     bool lost;
+    std::shared_ptr<Figure> currentFigure;
+    std::shared_ptr<Figure> nextFigure;
 };
