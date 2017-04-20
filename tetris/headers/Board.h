@@ -5,12 +5,13 @@
 #include <string>
 #include <SFML/Graphics.hpp>
 #include "Window.h"
+#include "Game.h"
 
 class Window;
+class Game;
 class Board {
 public:
     explicit Board(std::shared_ptr<Window> window);
-    virtual ~Board() {}
 
     void update();
     void render(const int, const int);
@@ -24,9 +25,5 @@ private:
     sf::Color recordColor;
     sf::Text score;
     sf::Text level;
-    int blockSize; // size of one block
     std::array<std::array<int, 10>, 20> grid;
-
-    static const int blocksHor  = 10;
-    static const int blocksVert = 20;
 };

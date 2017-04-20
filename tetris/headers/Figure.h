@@ -1,6 +1,8 @@
 #pragma once
 
 #include <array>
+#include <SFML/Graphics.hpp>
+#include "Game.h"
 
 const sf::Color FigureColors[7] = {
     sf::Color(248, 196, 50),
@@ -29,10 +31,15 @@ const std::array<std::array<int, 16>, 14> FigureBlocks = {{
     {0,0,0,0, 0,1,1,0, 0,1,1,0, 0,0,0,0}  // Cube
 }};
 
+class Game;
 class Figure {
 public:
-    Figure();
+    explicit Figure(std::shared_ptr<Window> w, sf::Vector2u c);
+    void render();
 private:
+    std::shared_ptr<Window> window;
+    sf::Vector2u coords;
     std::array<int, 16> blocks;
     sf::Color color;
+    sf::RectangleShape rect;
 };

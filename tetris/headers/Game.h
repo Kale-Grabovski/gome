@@ -6,10 +6,11 @@
 #include "Board.h"
 #include "Figure.h"
 
+class Figure;
+class Board;
 class Game {
 public:
     Game();
-    virtual ~Game() {}
 
     void setup();
     void handleInput();
@@ -21,14 +22,19 @@ public:
     void increaseScore();
     void lose();
 
+    static const int BLOCKS_HOR = 10;
+    static const int BLOCKS_VERT = 20;
+    static const int WINDOW_WIDTH = 500;
+    static const int WINDOW_HEIGHT = 600;
+    static const int BLOCK_SIZE = WINDOW_HEIGHT / 2 / BLOCKS_VERT;
+
 private:
     std::shared_ptr<Window> window;
     std::shared_ptr<Board> board;
+    std::shared_ptr<Figure> currentFigure;
     sf::Clock clock;
     sf::Time elapsed;
     int score = 0;
     int level = 1;
     bool lost;
-    std::shared_ptr<Figure> currentFigure;
-    std::shared_ptr<Figure> nextFigure;
 };
