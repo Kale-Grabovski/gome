@@ -26,7 +26,7 @@ const std::array<std::array<int, 16>, 14> FigureBlocks = {{
     {0,0,0,0, 0,1,0,0, 1,1,1,0, 0,0,0,0}, // Submarine
     {0,0,1,0, 0,1,1,0, 0,0,1,0, 0,0,0,0}, // Submarine
     {0,1,0,0, 0,1,1,0, 0,1,0,0, 0,0,0,0}, // Submarine
-    {0,0,0,0, 1,1,1,1, 0,0,0,0, 0,0,0,0}, // Line
+    {0,0,0,0, 0,0,0,0, 1,1,1,1, 0,0,0,0}, // Line
     {0,1,0,0, 0,1,0,0, 0,1,0,0, 0,1,0,0}, // Line
     {0,0,0,0, 0,1,1,0, 0,1,1,0, 0,0,0,0}  // Cube
 }};
@@ -36,6 +36,14 @@ class Figure {
 public:
     explicit Figure(std::shared_ptr<Window> w, sf::Vector2u c);
     void render();
+    void update();
+    void destroy();
+    void rotate();
+    void onLeft();
+    void onRight();
+    sf::Color getColor() const;
+    sf::Vector2u getCoords() const;
+    std::array<int, 16> getBlocks() const;
 private:
     std::shared_ptr<Window> window;
     sf::Vector2u coords;

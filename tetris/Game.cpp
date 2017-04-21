@@ -2,9 +2,26 @@
 #include "headers/Game.h"
 
 Game::Game() 
-    : window(std::make_shared<Window>("Tetris", sf::Vector2u(WINDOW_WIDTH, WINDOW_HEIGHT))),
-    board(std::make_shared<Board>(window)),
-    currentFigure(std::make_shared<Figure>(window, sf::Vector2u(4 * BLOCK_SIZE, 2 * BLOCK_SIZE))) { }
+    : eventManager(std::make_shared<EventManager>()),
+    window(std::make_shared<Window>(eventManager, "Tetris", sf::Vector2u(WINDOW_WIDTH, WINDOW_HEIGHT))),
+    board(std::make_shared<Board>(window)) { 
+    attachCallbacks();
+}
+
+void Game::attachCallbacks() {
+    eventManager->addCallback("Arrow_up", &Game::arrowUp, this);
+    eventManager->addCallback("Arrow_left", &Game::arrowLeft, this);
+    eventManager->addCallback("Arrow_right", &Game::arrowRight, this);
+    eventManager->addCallback("Arrow_down", &Game::speedUp, this);
+}
+
+void Game::arrowUp(EventDetails*) { board->rotate(); }
+void Game::arrowLeft(EventDetails*) { board->onLeft(); }
+void Game::arrowRight(EventDetails*) { board->onRight(); }
+
+void Game::speedUp(EventDetails*) { 
+
+}
 
 void Game::setup() {
     time(NULL);
@@ -24,7 +41,6 @@ void Game::update() {
 void Game::render() {
     window->beginDraw();
     board->render(score, level);
-    currentFigure->render();
     window->endDraw();
 }
 
@@ -36,20 +52,6 @@ sf::Time Game::getElapsed() const {
 
 void Game::restartClock() {
     elapsed += clock.restart();
-}
-
-void Game::handleInput() {
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-        // rotate
-    } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-        // speed up falling
-    } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-        // go left
-    } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-        // go right
-    }
-
-    // later space for pause
 }
 
 void Game::increaseScore() {

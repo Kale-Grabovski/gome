@@ -6,7 +6,6 @@ int main(int argc, char* argv[]) {
     game->setup();
 
     while (!game->getWindow()->getIsDone()) {
-        game->handleInput();
         game->update();
         game->render();
         game->restartClock();

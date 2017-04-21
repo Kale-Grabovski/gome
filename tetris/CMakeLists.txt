@@ -16,7 +16,7 @@ include_directories("${PROJECT_BINARY_DIR}")
 
 set(EXECUTABLE_NAME "tetris")
 file(GLOB OTHER_CPP *.cpp)
-add_executable(${EXECUTABLE_NAME}  Game.cpp Window.cpp Board.cpp Figure.cpp main.cpp)
+add_executable(${EXECUTABLE_NAME} main.cpp ${OTHER_CPP})
 
 
 # Detect and add SFML
