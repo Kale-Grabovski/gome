@@ -1,4 +1,9 @@
+#include <iostream>
 #include "StateManager.h"
+#include "State_Intro.h"
+#include "State_Game.h"
+#include "State_MainMenu.h"
+#include "State_Paused.h"
 
 StateManager::StateManager(SharedContext* l_shared): m_shared(l_shared) {
     RegisterState<State_Intro>(StateType::Intro);
@@ -17,7 +22,7 @@ StateManager::~StateManager() {
 SharedContext* StateManager::GetContext() { return m_shared; }
 
 bool StateManager::HasState(const StateType& l_type) {
-    for (auto itr = m_states->begin(); itr != m_states->end(); ++itr) {
+    for (auto itr = m_states.begin(); itr != m_states.end(); ++itr) {
         if (itr->first == l_type) {
             auto removed = std::find(m_toRemove.begin(), m_toRemove.end(), l_type);
 
@@ -46,25 +51,25 @@ void StateManager::ProcessRequests() {
 void StateManager::SwitchTo(const StateType& l_type) {
     m_shared->m_eventManager->SetCurrentState(l_type);
 
-    for (auto itr = m_states->begin(); itr != m_states->end(); ++itr) {
+    for (auto itr = m_states.begin(); itr != m_states.end(); ++itr) {
         if (itr->first == l_type) {
-            m_states->back().second->Deactivate();
+            m_states.back().second->Deactivate();
             StateType tmp_type = itr->first;
             BaseState* tmp_state = itr->second;
-            m_states->erase(itr);
-            m_states->emplace_back(tmp_type, tmp_state);
+            m_states.erase(itr);
+            m_states.emplace_back(tmp_type, tmp_state);
             tmp_state->Activate();
             return;
         }
     }
 
     // State with l_type wasn't found.
-    if (!m_states->empty()) { 
-        m_states->back().second->Deactivate(); 
+    if (!m_states.empty()) { 
+        m_states.back().second->Deactivate(); 
     }
 
     CreateState(l_type);
-    m_states->back().second->Activate();
+    m_states.back().second->Activate();
 }
 
 void StateManager::CreateState(const StateType& l_type) {
@@ -75,31 +80,31 @@ void StateManager::CreateState(const StateType& l_type) {
     }
 
     BaseState* state = newState->second();
-    m_states->emplace_back(l_type, state);
+    m_states.emplace_back(l_type, state);
     state->OnCreate();
 }
 
 void StateManager::RemoveState(const StateType& l_type) {
-    for (auto itr = m_states->begin(); itr != m_states->end(); ++itr) {
+    for (auto itr = m_states.begin(); itr != m_states.end(); ++itr) {
         if (itr->first == l_type) {
             itr->second->OnDestroy();
             delete itr->second;
-            m_states->erase(itr);
+            m_states.erase(itr);
             return;
         }
     }
 }
 
 void StateManager::Draw() {
-    if (m_states->empty()) { 
+    if (m_states.empty()) { 
         return; 
     }
 
-    if (m_states->back().second->IsTransparent() && m_states->size() > 1) {
-        auto itr = m_states->end();
+    if (m_states.back().second->IsTransparent() && m_states.size() > 1) {
+        auto itr = m_states.end();
 
-        while (itr != m_states->begin()) {
-            if (itr != m_states->end()) {
+        while (itr != m_states.begin()) {
+            if (itr != m_states.end()) {
                 if (!itr->second->IsTransparent()) {
                     break;
                 }
@@ -108,36 +113,36 @@ void StateManager::Draw() {
             --itr;
         }
 
-        for (; itr != m_states->end(); ++itr) {
+        for (; itr != m_states.end(); ++itr) {
             itr->second->Draw();
         }
     } else {
-        m_states->back().second->Draw();
+        m_states.back().second->Draw();
     }
 }
 
 void StateManager::Update(const sf::Time& l_time) {
-    if (m_states->empty()  {
+    if (m_states.empty())  {
         return; 
     }
 
-    if (m_states->back().second->IsTranscendent() && m_states->size() > 1) {
-        auto itr = m_states->end();
+    if (m_states.back().second->IsTranscendent() && m_states.size() > 1) {
+        auto itr = m_states.end();
 
-        while (itr != m_states->begin() {
-            if (itr != m_states->end() {
-                if (!itr->second->IsTranscendent() {
+        while (itr != m_states.begin()) {
+            if (itr != m_states.end()) {
+                if (!itr->second->IsTranscendent()) {
                     break;
                 }
             }
 
             --itr;
         }
-        for (; itr != m_states->end(); ++itr {
+        for (; itr != m_states.end(); ++itr) {
             itr->second->Update(l_time);
         }
     } else {
-        m_states->back().second->Update(l_time);
+        m_states.back().second->Update(l_time);
     }
 }
 

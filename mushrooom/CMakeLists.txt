@@ -1,6 +1,7 @@
 #Change this if you need to target a specific CMake version
 cmake_minimum_required(VERSION 2.6)
 
+
 # Enable debug symbols by default
 # must be done before project() statement
 if(NOT CMAKE_BUILD_TYPE)
@@ -8,18 +9,19 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 # (you can also set it on the command line: -D CMAKE_BUILD_TYPE=Release)
 
-
 project(mushroom)
 
 include_directories("${PROJECT_BINARY_DIR}")
 
-set(EXECUTABLE_NAME "mushroom")
+set(EXECUTABLE_NAME "../mushroom")
 file(GLOB OTHER_CPP *.cpp)
-add_executable(${EXECUTABLE_NAME} main.cpp ${OTHER_CPP})
+file(GLOB STATES_CPP states/*.cpp)
+add_executable(${EXECUTABLE_NAME} main.cpp ${OTHER_CPP} ${STATES_CPP})
 
 
 # Detect and add SFML
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" ${CMAKE_MODULE_PATH})
+
 #Find any version 2.X of SFML
 #See the FindSFML.cmake file for additional details and instructions
 find_package(SFML 2 REQUIRED system window graphics network audio)
@@ -30,7 +32,6 @@ endif()
 
 set(CMAKE_CXX_COMPILER /usr/bin/g++-5)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -g")
-set(SOURCE_FILES main.cpp ${OTHER_CPP})
 
 # Install target
 install(TARGETS ${EXECUTABLE_NAME} DESTINATION bin)

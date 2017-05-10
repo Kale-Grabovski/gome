@@ -1,7 +1,7 @@
 #pragma once 
 
 #include "Window.h"
-#include "StateManager.h"
+#include "states/StateManager.h"
 #include <SFML/Graphics.hpp>
 
 class Game {

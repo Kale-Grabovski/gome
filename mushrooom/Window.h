@@ -15,13 +15,11 @@ public:
     void EndDraw(); // Display the changes.
     void Update();
     bool IsDone();
-    bool IsFullscreen();
     sf::Vector2u GetWindowSize();
     void Draw(sf::Drawable& l_drawable);
     bool IsFocused();
     EventManager* GetEventManager();
     sf::RenderWindow* GetRenderWindow();
-    void ToggleFullscreen(EventDetails* l_details);
     void Close(EventDetails* l_details = nullptr);
 
 private:
@@ -32,7 +30,6 @@ private:
     sf::Vector2u m_windowSize;
     std::string m_windowTitle;
     bool m_isDone;
-    bool m_isFullscreen;
     EventManager* m_eventManager;
     bool m_isFocused;
 };

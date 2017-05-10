@@ -2,11 +2,14 @@
 
 #include "BaseState.h"
 
+class BaseState;
 enum class StateType;
 struct SharedContext;
-struct StateContainer;
-struct TypeContainer;
-struct StateFactory;
+
+using StateContainer = std::vector<std::pair<StateType, BaseState*>>;
+using TypeContainer = std::vector<StateType>;
+using StateFactory = std::map<StateType, std::function<BaseState*(void)>>;
+
 class StateManager {
 public:
     StateManager(SharedContext* l_shared);
@@ -21,7 +24,6 @@ public:
     void Remove(const StateType& l_type);
 
 private:
-    // Methods.
     void CreateState(const StateType& l_type);
     void RemoveState(const StateType& l_type);
 
@@ -32,9 +34,8 @@ private:
         };
     }
 
-    // Members.
     SharedContext* m_shared;
-    StateContainer* m_states;
+    StateContainer m_states;
     TypeContainer m_toRemove;
     StateFactory m_stateFactory;
 };

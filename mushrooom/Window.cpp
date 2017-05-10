@@ -16,19 +16,16 @@ Window::~Window() {
 void Window::Setup(const std::string& l_title, const sf::Vector2u& l_size) {
     m_windowTitle = l_title;
     m_windowSize = l_size;
-    m_isFullscreen = false;
     m_isDone = false;
     Create();
 
     m_isFocused = true; // Default value for focused flag.
     m_eventManager = new EventManager();
-    //m_eventManager->AddCallback("Fullscreen_toggle", &Window::ToggleFullscreen, this);
-    //m_eventManager->AddCallback("Window_close", &Window::Close, this);
+    m_eventManager->AddCallback(StateType(0),"Window_close", &Window::Close, this);
 }
 
 void Window::Create() {
-    auto style = (m_isFullscreen ? sf::Style::Fullscreen : sf::Style::Default);
-    m_window.create({m_windowSize.x, m_windowSize.y, 32}, m_windowTitle, style);
+    m_window.create({m_windowSize.x, m_windowSize.y, 32}, m_windowTitle, sf::Style::Default);
 }
 
 void Window::Destroy() {
@@ -53,12 +50,6 @@ void Window::Update() {
     m_eventManager->Update();
 }
 
-void Window::ToggleFullscreen(EventDetails* l_details) {
-    m_isFullscreen = !m_isFullscreen;
-    Destroy();
-    Create();
-}
-
 void Window::BeginDraw() { 
     m_window.clear(sf::Color::Black); 
 }
@@ -68,7 +59,6 @@ void Window::EndDraw() {
 }
 
 bool Window::IsDone() { return m_isDone; }
-bool Window::IsFullscreen() { return m_isFullscreen; }
 sf::Vector2u Window::GetWindowSize() { return m_windowSize; }
 
 void Window::Draw(sf::Drawable& l_drawable) {

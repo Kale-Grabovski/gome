@@ -1,8 +1,8 @@
 #pragma once 
 
 #include <vector>
-#include "EventManager.h"
-#include "Window.h"
+#include "../EventManager.h"
+#include "../Window.h"
 
 enum class StateType {
     Intro = 1, MainMenu, Game, Paused, GameOver, Credits
@@ -43,6 +43,6 @@ protected:
     bool m_transcendent;
 };
 
-struct StateContainer : std::vector<std::pair<StateType, BaseState*>> {};
-struct TypeContainer : std::vector<StateType> {};
-struct StateFactory : std::map<StateType, std::function<BaseState*(void)>> {};
+using StateContainer = std::vector<std::pair<StateType, BaseState*>>;
+using TypeContainer = std::vector<StateType>;
+using StateFactory = std::map<StateType, std::function<BaseState*(void)>>;

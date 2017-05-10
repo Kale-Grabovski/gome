@@ -25,6 +25,10 @@ void EventManager::SetFocus(const bool& l_focus) {
     m_hasFocus = l_focus;
 }
 
+void EventManager::SetCurrentState(StateType l_state){
+    m_currentState = l_state;
+}
+
 bool EventManager::RemoveBinding(std::string l_name) {
     auto itr = m_bindings.find(l_name);
     if (itr == m_bindings.end()) { return false; }
@@ -124,9 +128,19 @@ void EventManager::Update() {
                 }
                 break;
 
-            case(EventType::Joystick) :
-                // Up for expansion.
-                break;
+            case(EventType::Joystick) : break;
+            case(EventType::KeyDown) : break;
+            case(EventType::KeyUp) : break;
+            case(EventType::MButtonDown) : break;
+            case(EventType::MButtonUp) : break;
+            case(EventType::MouseWheel) : break;
+            case(EventType::WindowResized) : break;
+            case(EventType::GainedFocus) : break;
+            case(EventType::LostFocus) : break;
+            case(EventType::MouseEntered) : break;
+            case(EventType::MouseLeft) : break;
+            case(EventType::Closed) : break;
+            case(EventType::TextEntered) : break;
             }
         }
 

@@ -6,8 +6,8 @@
 #include <utility>
 #include <map>   
 #include <SFML/Graphics.hpp>
-#include "BaseState.h"
-#include "StateManager.h"
+#include "states/BaseState.h"
+#include "states/StateManager.h"
 
 enum class EventType {
     KeyDown = sf::Event::KeyPressed,
@@ -71,9 +71,9 @@ struct Binding {
     uint c; // Count of events that are "happening".
 };
 
-enum class StateType; // forward decl
 using Bindings  = std::map<std::string, Binding*>;
 using CallbackContainer = std::map<std::string, std::function<void(EventDetails*)>>;
+enum class StateType; // forward decl
 using Callbacks = std::map<StateType, CallbackContainer>;
 
 
@@ -84,6 +84,7 @@ public:
 
     bool AddBinding(Binding* l_binding);
     bool RemoveBinding(std::string l_name);
+    void SetCurrentState(StateType l_state);
     void SetFocus(const bool& l_focus);
 
     // Needs to be defined in the header!
