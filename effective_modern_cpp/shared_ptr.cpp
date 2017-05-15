@@ -25,14 +25,18 @@ public:
     static std::vector<std::shared_ptr<Widget>> widgets;
 };
 
-Widget::widgets = std::vector<std::shared_ptr<Widget>>();
+std::vector<std::shared_ptr<Widget>> Widget::widgets;
 
 int main() {
     //crashed(); // fuck it
 
-    Widget w, w1;
-    w.process();
-    w1.process();
+    // If we declare these vars as usual pointer the program will crash at runtime,
+    // because shared_from_this() only worked with shared_ptr-s
+    auto w1 = std::make_shared<Widget>();
+    auto w2 = std::make_shared<Widget>();
+
+    w1->process();
+    w2->process();
 
     std::cout << "Hi" << std::endl;
 
