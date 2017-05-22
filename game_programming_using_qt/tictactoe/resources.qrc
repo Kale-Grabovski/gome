@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file alias="exit">exit_game.jpg</file>
+        <file alias="new">new_game.jpg</file>
+    </qresource>
+</RCC>
